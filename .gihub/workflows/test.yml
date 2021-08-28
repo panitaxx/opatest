@@ -1,0 +1,24 @@
+name: testing_backend
+on:
+  push:
+jobs:
+  testing:
+    name: run  tests
+    runs-on:
+      ubuntu-latest
+    strategy:
+      matrix:
+        go: ['1.17','1.16', '1.13' ]
+ 
+    steps:
+      # Downloads a copy of the code in your repository before running CI tests
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Setup go
+        uses: actions/setup-go@v1
+        with:
+          go-version: ${{ matrix.go }}
+      - name: Run test folder usecase
+        working-directory: ./
+        run: |
+          go test ./... -v -cover -coverprofile=profile.cov -p 1
